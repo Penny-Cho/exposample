@@ -1,50 +1,53 @@
 import React, { useState } from 'react';
-import { CourseGoal } from './interfaces';
-import { FlatList, StyleSheet, View } from 'react-native';
-import HeaderText from './components/elements/HeaderText';
-import InputText from './components/forms/InputText';
-import BaseBtn from './components/elements/BaseBtn';
-import GoalItem from './components/elements/GoalItem';
+import { StyleSheet, View } from 'react-native';
+import TopNav from './components/nav/TopNav';
+import GameOver from './screens/GameOver';
+import OnGame from './screens/OnGame';
+import StartGame from './screens/StartGame';
 
 export default function App() {
-	const [enteredGoal, setEnteredGoal] = useState('');
-	const [courseGoals, setCourseGoals] = useState<CourseGoal[] | []>([]);
+	const [userNumber, setUserNumber] = useState<number>();
+	const [guessRounds, setGuessRounds] = useState(0);
 
-	const goalInputHandler = (enteredText: string) => setEnteredGoal(enteredText);
+	const startGameHandler = (selectedNumber: number) => {
+		setUserNumber(selectedNumber);
+	};
 
-	const addGoalHandler = () =>
-		setCourseGoals(curr => [...curr, { id: Math.random().toString(), value: enteredGoal }]);
+	const gameOverHandler = (numOfRounds: number) => {
+		setGuessRounds(numOfRounds);
+		setGuessRounds(0);
+	};
 
 	return (
 		<View style={styles.screen}>
-			<View style={styles.inputBox}>
-				<HeaderText title="Tasks To Do" />
-				<InputText
-					onChangeText={goalInputHandler}
-					value={enteredGoal}
-					placeholder="enter a new job"
-				/>
-				<BaseBtn onPress={addGoalHandler} title="추가하기" />
-			</View>
-			<View style={styles.listBox}>
-				<FlatList
-					keyExtractor={(item, index) => item.id}
-					data={courseGoals}
-					renderItem={item => <GoalItem item={item.item} />}
-				/>
-			</View>
+			<TopNav title="Guess A Number" />
+			{userNumber ? (
+				guessRounds <= 0 ? (
+					<OnGame userChoice={userNumber} onGameOver={gameOverHandler} />
+				) : (
+					<GameOver />
+				)
+			) : (
+				<StartGame onStartGame={startGameHandler} />
+			)}
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
 	screen: {
-		paddingTop: 50,
+		flex: 1,
+		paddingTop: 20,
 	},
-	inputBox: {
-		padding: 20,
+	cardWrapper: {
+		marginTop: '10%',
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		maxHeight: '30%',
 	},
-	listBox: {
-		paddingHorizontal: 20,
+	card: {
+		height: '35%',
+		minWidth: '30%',
 	},
 });

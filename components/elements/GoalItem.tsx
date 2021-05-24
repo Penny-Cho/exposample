@@ -1,16 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CourseGoal } from '../../interfaces';
 
 type Props = {
 	item: CourseGoal;
+	onDelete: (event: GestureResponderEvent) => void;
 };
 
-const GoalItem = ({ item }: Props) => {
+const GoalItem = ({ onDelete, item }: Props) => {
 	return (
-		<View style={styles.listItemBox}>
-			<Text>{item.value}</Text>
-		</View>
+		<TouchableOpacity activeOpacity={0.7} onLongPress={onDelete}>
+			<View style={styles.listItemBox}>
+				<Text>{item.value}</Text>
+			</View>
+		</TouchableOpacity>
 	);
 };
 
