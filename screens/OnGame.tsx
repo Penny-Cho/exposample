@@ -14,15 +14,16 @@ const generateRandomBetween = (min: number, max: number, exclude: number): numbe
 	const rndNum = Math.floor(Math.random() * (max - min)) + min;
 	if (rndNum === exclude) {
 		return generateRandomBetween(min, max, exclude);
+	} else {
+		return rndNum;
 	}
-	return rndNum;
 };
 
 const OnGame = ({ userChoice, onGameOver }: Props) => {
 	const [currGuess, setCurrGuess] = useState(generateRandomBetween(1, 100, userChoice));
+	const [rounds, setRounds] = useState(0);
 	const currLow = useRef(1);
 	const currHigh = useRef(100);
-	const [rounds, setRounds] = useState(0);
 
 	useEffect(() => {
 		if (currGuess === userChoice) {

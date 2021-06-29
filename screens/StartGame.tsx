@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
 import Btn from '../components/elements/Btn';
 import DismissKeyboard from '../components/elements/DismissKeyboard';
 import InputText from '../components/forms/InputText';
@@ -31,13 +31,14 @@ const StartGame = ({ onStartGame }: Props) => {
 		setConfirmed(true);
 		setSelectedNumber(chosenNumber);
 		setEnteredValue('');
+		Keyboard.dismiss();
 	};
 
 	return (
 		<DismissKeyboard>
 			<View style={styles.screen}>
 				<View>
-					<Text>Select a Number</Text>
+					<Text style={styles.desc}>어이</Text>
 
 					<InputText
 						value={enteredValue}
@@ -73,6 +74,9 @@ const StartGame = ({ onStartGame }: Props) => {
 };
 
 const styles = StyleSheet.create({
+	desc: {
+		fontFamily: 'NotoSansKR-Bold',
+	},
 	screen: {
 		flex: 1,
 		paddingTop: 30,
